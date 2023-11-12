@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import YouTube from 'react-youtube';
 import './YoutubePlayer.css'
+import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 
 const YoutubePlayer = () => {
     const [playerRef, setPlayerRef] = useState(null);
@@ -86,7 +87,7 @@ const YoutubePlayer = () => {
             modestbranding: 1,
             rel: 0,
             showinfo: 0,
-            autoplay: 1,
+            autoplay: 0,
             controls: 0,
             vq: 'large'
         },
@@ -104,7 +105,7 @@ const YoutubePlayer = () => {
                 onStateChange={onPlayerStateChange}
             />
             <img className="yt-thumbnail-overlay" src={window.thumbnail_url} alt="Overlay Player" draggable="false" />
-            <i className="fa fa-play-circle yt-player-button" style={{ fontSize: '100px' }} />
+            <PlayCircleIcon className="yt-player-button" style={{ fontSize: '100px' }} />
         </div>
     );
 };

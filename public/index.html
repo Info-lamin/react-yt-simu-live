@@ -4,7 +4,6 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Youtube Player</title>
 </head>
 
@@ -15,7 +14,7 @@
         let params = new URL(window.location.href).searchParams
         window.video_id = params.get('video_id') || '9Ma4d4rAGW0';  // Video ID
         window.start_hour = params.get('start_hour') || 19;           // Hours
-        window.start_minute = params.get('start_minute') || 0;         //minutes
+        window.start_minute = params.get('start_minute') || 10;         //minutes
         window.thumbnail_url = params.get('thumbnail_url') || 'http://img.youtube.com/vi/9Ma4d4rAGW0/0.jpg';
         window.room_name = params.get('room_name') || 'room1';
         window.download_page = params.get('download_page') || '<a href="https://www.infomin.solutions">Infomin Solutions</a>';

@@ -30,9 +30,10 @@ const paperStyle = {
 };
 
 const chatContainerStyle = {
-    height: '70vh',
-    overflowY: 'auto',
     padding: '20px',
+    display: 'flex',
+    flexDirection: 'column-reverse',
+    justifyContent: 'start'
 };
 
 const formStyle = {
@@ -139,7 +140,7 @@ function ChatRoom({ roomName }) {
 
             <Paper elevation={3} style={chatContainerStyle}>
                 {messages &&
-                    messages.slice().reverse().map((msg) => (
+                    messages.map((msg) => (
                         <ChatMessage key={msg.id} message={msg} />
                     ))}
             </Paper>
