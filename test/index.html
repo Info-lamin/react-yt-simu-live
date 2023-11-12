@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var video_id = '9Ma4d4rAGW0';  // Video ID
+        var start_hour = 10;           // Hours
+        var start_minute = 50;         //minutes
+        var end_before = 5;            // Seconds
+        var redirect_to = 'https://blog.askjhansi.com/session-ended/';
+        var no_browser_url = 'https://blog.askjhansi.com/browser/';
+    </script>
+
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        iframe {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 999;
+        }
+
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.1);
+            /* Transparent black */
+            z-index: 9999;
+            /* Make sure xthe overlay is on top */
+            display: none;
+            /* Hide the overlay by default */
+        }
+
+        .top-overlay {
+            top: 0;
+            position: fixed;
+            left: 0;
+            width: 100%;
+            height: calc(50% - 25px);
+            background-color: rgba(0, 0, 0);
+            z-index: 9999;
+        }
+
+        .bottom-overlay {
+            bottom: 0;
+            position: fixed;
+            left: 0;
+            width: 100%;
+            height: calc(50% - 25px);
+            background-color: rgba(0, 0, 0);
+            z-index: 9999;
+        }
+
+        .left-overlay {
+            left: 0;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            width: calc(100vw / 2 - 40px);
+            height: 100%;
+            background-color: rgba(0, 0, 0);
+            z-index: 9999;
+        }
+
+        .right-overlay {
+            right: 0;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            width: calc(100vw / 2 - 40px);
+            height: 100%;
+            background-color: rgba(0, 0, 0);
+            z-index: 9999;
+        }
+    </style>
+    <div id="overlay">
+        <div id="center-box"></div>
+    </div>
+    <div class="top-overlay"></div>
+    <div class="bottom-overlay"></div>
+    <div class="left-overlay"></div>
+    <div class="right-overlay"></div>
+    <div id="player"></div>
+
+    <script>
+        function check_browser() {
+            var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+            var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
+
+            if (!isChrome && !isSafari) {
+                alert("This video is playable only with Safari and Chrome. Please switch to one of these browsers.");
+                window.location.href = no_browser_url;
+            }
+            else {
+                return 0;
+            }
+        }
+        check_browser();
+        // 2. This code loads the IFrame Player API code asynchronously.
+        var tag = document.createElement('script');
+
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        // 3. This function creates an <iframe> (and YouTube player)
+        //    after the API code downloads.
+        var player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '100%',
+                width: '100% auto',
+                videoId: video_id,
+                playerVars: {
+                    'playsinline': 1,
+                    'autoplay': 1,
+                    'rel': 0,
+                    'controls': 0,
+                    'modestbranding': 1,
+                    'vq': 'large'
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        // 4. The API will call this function when the video player is ready.
+        function onPlayerReady(event) {
+            event.target.playVideo();
+        }
+
+        function make_live() {
+            let now = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            let seconds = now.getSeconds();
+
+            // Calculate the number of seconds elapsed since 10:00:00
+            let startSeconds = start_hour * 60 * 60; // 10:00:00 in seconds
+            startSeconds = startSeconds + start_minute * 60;
+            let startTime = hours * 60 * 60 + minutes * 60 + seconds - startSeconds;
+            if (startTime < 0) {
+                window.location.href = 'https://blog.askjhansi.com/2757-2/';
+            }
+            player.seekTo(startTime);
+            player.playVideo();
+        }
+
+        // 5. The API calls this function when the player's state changes.
+        //    The function indicates that when playing a video (state=1),
+        //    the player should play for six seconds and then stop.
+        var done = false;
+        function onPlayerStateChange(event) {
+            if (!done) {
+                if (event.data == YT.PlayerState.PLAYING) {
+                    // Get the current date and time
+                    make_live()
+                    done = true;
+                    toggleOverlay();
+                }
+                if (event.data == YT.PlayerState.ENDED) {
+                    window.location.href = redirect_to;
+                }
+            }
+        }
+
+        function toggleOverlay() {
+            document.getElementsByClassName("top-overlay")[0].remove();
+            document.getElementsByClassName("bottom-overlay")[0].remove();
+            document.getElementsByClassName("left-overlay")[0].remove();
+            document.getElementsByClassName("right-overlay")[0].remove();
+            var overlay = document.getElementById("overlay");
+            overlay.style.display = "block";
+            document.body.style.overflow = "hidden"; // Disable scrolling
+        }
+
+        function video_ended() {
+            var currentTime = player.getCurrentTime();
+            var duration = player.getDuration();
+            var timeLeft = duration - currentTime;
+            if (timeLeft < end_before) {
+                window.location.href = redirect_to;
+            }
+        }
+        setInterval(video_ended, 1000);
+
+        document.addEventListener('visibilitychange', function () {
+            if (!document.hidden) {
+                make_live()
+            }
+        })
+    </script>
+</body>
+
+</html>
