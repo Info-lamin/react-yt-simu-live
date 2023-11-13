@@ -24,7 +24,7 @@ const Footer = (props) => {
             <div className="menu-buttons">
                 <FooterButton id={props.page1} showDrawer={showDrawer} name='CHAT' />
                 <FooterButton id={props.page2} showDrawer={showDrawer} name='Download' />
-                <FooterButton id={props.page3} showDrawer={showDrawer} name='Join' />
+                <FooterButton id={props.page3} showDrawer={showDrawer} name='Links' />
                 <FooterButton id={props.page4} showDrawer={showDrawer} name='QnA' />
             </div>
             <Drawer id1={props.page1} id2={props.page2} id3={props.page3} id4={props.page4} />
